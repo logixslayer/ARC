@@ -1,13 +1,16 @@
-import { Menu, Search, Sun, X } from "lucide-react";
+import { LogOut, Menu, Search, Sun, X } from "lucide-react";
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { routeDefinitions } from "../../app/routes";
 import { Button } from "../ui/Button";
 import { useTheme } from "../../app/ThemeContext";
+import { useAuth } from "../../app/AuthContext";
+import { authService } from "../../services/authAdapter";
 
 export function AppLayout() {
   const [navigationOpen, setNavigationOpen] = useState(false);
   const { theme, setPreference } = useTheme();
+  const { user } = useAuth();
 
   return (
     <div className="app-shell">
@@ -31,7 +34,7 @@ export function AppLayout() {
             </NavLink>
           ))}
         </nav>
-        <div className="sidebar-footer"><span className="avatar">AL</span><span>Alex Lee</span></div>
+        <div className="sidebar-footer"><span className="avatar">{(user?.displayName || user?.email || "A").slice(0, 2).toUpperCase()}</span><span>{user?.displayName || user?.email}</span><Button variant="ghost" aria-label="Sign out" onClick={() => void authService.signOut()}><LogOut size={15} /></Button></div>
       </aside>
       <div className="main-shell">
         <header className="topbar">

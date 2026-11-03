@@ -64,16 +64,3 @@ export const authService: AuthService & {
     return onAuthStateChanged(firebaseAuth, (user) => listener(user ? toUser(user) : null));
   },
 };
-
-let currentUser: User | null = null;
-authService.subscribe((user) => {
-  currentUser = user;
-});
-
-export const authAdapter = {
-  ...authService,
-  isAuthenticated: () => currentUser !== null,
-  setAuthenticated: (_value: boolean) => {
-    // Kept for source compatibility while the frontend migrates to authService.
-  },
-};
