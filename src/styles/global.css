@@ -66,6 +66,12 @@ button { cursor: pointer; }
 .surface { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; min-height: 172px; box-shadow: var(--shadow); }
 .surface-title { display: flex; align-items: center; justify-content: space-between; color: var(--ink); font-size: 12px; font-weight: 700; letter-spacing: .01em; margin-bottom: 20px; }
 .empty-state { display: grid; place-content: center; min-height: 92px; text-align: center; color: var(--muted); font-size: 13px; }
+.success-state { color: #2f7253; background: #edf8f0; border: 1px solid #cbe8d3; border-radius: 8px; padding: 11px 13px; font-size: 13px; }
+.connected-list { display: grid; gap: 8px; }
+.connected-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid var(--line); color: var(--ink); font-size: 13px; }
+.connected-item > div { min-width: 0; display: grid; gap: 3px; }
+.connected-item strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.connected-item span { color: var(--muted); font-size: 11px; text-transform: capitalize; }
 .empty-state strong { color: #46534c; font-size: 14px; }
 .empty-state p { margin: 5px 0; }
 .loading-state { display: flex; gap: 7px; justify-content: center; padding: 38px; }
