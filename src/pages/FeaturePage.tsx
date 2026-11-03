@@ -1,9 +1,24 @@
 import { useState } from "react";
-import { ArrowUpRight, Check, Plus, Sparkles } from "lucide-react";
+import { Plus, Sparkles } from "lucide-react";
 import type { RouteDefinition } from "../app/routes";
 import { Button } from "../components/ui/Button";
-import { EmptyState, LoadingState } from "../components/ui/States";
+import { EmptyState } from "../components/ui/States";
 import { Surface } from "../components/ui/Surface";
+import { ThemeToggle } from "../components/ui/ThemeToggle";
+
+const sectionCopy: Record<string, { title: string; message: string }> = {
+  "Thought input": { title: "Make space for a thought", message: "Capture a sentence, question, or idea. Your connected brain will appear here once sync is enabled." },
+  "Recent thoughts": { title: "No thoughts captured yet", message: "Your latest captures will be organized here without losing their original context." },
+  "Task creation": { title: "Start with one clear action", message: "Create a task to give your attention a useful next step." },
+  "List view": { title: "Your task list is ready", message: "Tasks from your workspace will appear here when the data connection is available." },
+  "Daily planner": { title: "Shape your day", message: "Time blocks and appointments will appear here once your planner is connected." },
+  "Reminder creation": { title: "Nothing to remember yet", message: "Add a reminder and ARC will keep it visible at the right moment." },
+  "Pomodoro timer": { title: "Protect your attention", message: "Your focus timer is ready for a session. Start when you are ready to do meaningful work." },
+  "Resource cards": { title: "Your vault is quiet", message: "Save a note, link, or resource to build a knowledge space that stays useful." },
+  "Daily writing": { title: "A blank page can be kind", message: "Write a few lines about today. Your journal entries will stay private and organized." },
+  "Productivity summary": { title: "Insights will grow with use", message: "Connect your workspace activity to see patterns without guessing at your progress." },
+  Profile: { title: "Your profile", message: "Profile details will be available when account data is connected." },
+};
 
 export function FeaturePage({ definition }: { definition: RouteDefinition }) {
   const [showInput, setShowInput] = useState(false);
@@ -20,22 +35,21 @@ export function FeaturePage({ definition }: { definition: RouteDefinition }) {
           <div className="welcome-card">
             <div>
               <span className="welcome-kicker"><Sparkles size={14} aria-hidden="true" /> A clear start</span>
-              <h2>Good morning, Alex.</h2>
-              <p>You have a focused day ahead. Here is what deserves your attention first.</p>
+              <h2>Your calm workspace is ready.</h2>
+              <p>Start by capturing one thought or task. ARC will turn it into a clear next step when your data connection is ready.</p>
             </div>
-            <div className="daily-score"><strong>72%</strong><span>day planned</span></div>
+            <div className="daily-score"><strong>Setup</strong><span>workspace status</span></div>
           </div>
           <div className="metric-grid">
-            <div className="metric-card"><span className="metric-label">Open tasks</span><strong>12</strong><span className="metric-trend positive">↓ 3 from yesterday</span></div>
-            <div className="metric-card"><span className="metric-label">Focus time</span><strong>2h 40m</strong><span className="metric-trend">Goal: 4h</span></div>
-            <div className="metric-card"><span className="metric-label">Completed</span><strong>8</strong><span className="metric-trend positive">↑ 20% this week</span></div>
+            <div className="metric-card"><span className="metric-label">Workspace status</span><strong>Ready</strong><span className="metric-trend">Waiting for sync</span></div>
+            <div className="metric-card"><span className="metric-label">Next step</span><strong>Capture</strong><span className="metric-trend">Start with one thought</span></div>
+            <div className="metric-card"><span className="metric-label">Theme</span><strong>Personal</strong><span className="metric-trend">Choose your atmosphere</span></div>
           </div>
         </div>
       )}
       <div className="section-grid">
         {definition.sections.map((section, index) => <Surface title={section} key={section}>
-          {index === 0 && definition.path === "/app/dashboard" ? <div className="priority-list"><div className="list-item"><span className="task-check"><Check size={14} /></span><span><strong>Review product brief</strong><small>Work · Due in 2 hours</small></span><ArrowUpRight size={16} aria-hidden="true" /></div><div className="list-item"><span className="task-check"><Check size={14} /></span><span><strong>Plan tomorrow’s deep work</strong><small>Planning · 15 min</small></span><ArrowUpRight size={16} aria-hidden="true" /></div><button className="text-button">View all tasks <ArrowUpRight size={14} /></button></div>
-            : index === 0 ? <EmptyState title="Ready when you are" message="This workspace is connected to its typed service contract and ready for backend data." /> : index === 1 ? <LoadingState /> : <EmptyState title="No items yet" message="Items created here will appear in this section." />}
+          {definition.path === "/app/settings" && section === "Theme" ? <ThemeToggle /> : index === 0 && definition.path === "/app/dashboard" ? <EmptyState title="Your priorities will appear here" message="Connect your task data or use Add new to create your first next step." /> : <EmptyState title={sectionCopy[section]?.title ?? "No connected data yet"} message={sectionCopy[section]?.message ?? "This area is ready for your connected ARC data."} />}
         </Surface>)}
       </div>
     </div>
