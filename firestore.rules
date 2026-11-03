@@ -1,0 +1,90 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsExistingDocument() {
+      return signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    function ownsNewDocument() {
+      return signedIn() && request.resource.data.userId == request.auth.uid;
+    }
+
+    function ownsUpdatedDocument() {
+      return ownsExistingDocument()
+        && ownsNewDocument()
+        && request.resource.data.userId == resource.data.userId;
+    }
+
+    match /users/{userId} {
+      allow read, create, update: if signedIn() && request.auth.uid == userId;
+      allow delete: if false;
+
+      match /preferences/{preferenceId} {
+        allow read, create, update, delete: if signedIn()
+          && request.auth.uid == userId
+          && preferenceId == "default";
+      }
+    }
+
+    match /thoughts/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /tasks/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /schedules/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /reminders/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /focusSessions/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /vaultItems/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /journalEntries/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+
+    match /goals/{documentId} {
+      allow read: if ownsExistingDocument();
+      allow create: if ownsNewDocument();
+      allow update: if ownsUpdatedDocument();
+      allow delete: if ownsExistingDocument();
+    }
+  }
+}
